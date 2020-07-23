@@ -6,7 +6,7 @@ put melons in a shopping cart.
 Authors: Joel Burton, Christian Fernandez, Meggie Mahnken, Katie Byers.
 """
 
-from flask import Flask, render_template, redirect, flash
+from flask import Flask, render_template, redirect, flash, request
 import jinja2
 
 import melons
@@ -39,6 +39,7 @@ def list_melons():
     """Return page showing all the melons ubermelon has to offer"""
 
     melon_list = melons.get_all()
+    
     return render_template("all_melons.html",
                            melon_list=melon_list)
 
@@ -49,8 +50,9 @@ def show_melon(melon_id):
 
     Show all info about a melon. Also, provide a button to buy that melon.
     """
-
-    melon = melons.get_by_id("meli")
+    
+    # melon_selected = request.args.get(melon.melon_id)
+    melon = melons.get_by_id(melon_id)
     print(melon)
     return render_template("melon_details.html",
                            display_melon=melon)
