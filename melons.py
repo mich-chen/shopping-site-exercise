@@ -26,6 +26,8 @@ class Melon(object):
         self.image_url = image_url
         self.color = color
         self.seedless = seedless
+        
+
 
     def price_str(self):
         """Return price formatted as string $x.xx"""

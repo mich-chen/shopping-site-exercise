@@ -14,8 +14,9 @@
             <div class="well">
                 <h3>Price per melon</h3>
                 <p> {{ display_melon.price_str() }} </p>
-                <a class="btn btn-primary" href="/add_to_cart/{{ display_melon.melon_id }}">
+                <a name="melon_id" class="btn btn-primary" href="/add_to_cart/{{ display_melon.melon_id }}" value="display_melon.melon_id">
                     Add to Cart
+
                 </a>
             </div>
         </div>

@@ -6,7 +6,7 @@ put melons in a shopping cart.
 Authors: Joel Burton, Christian Fernandez, Meggie Mahnken, Katie Byers.
 """
 
-from flask import Flask, render_template, redirect, flash, request
+from flask import Flask, render_template, redirect, flash, request, session
 import jinja2
 
 import melons
@@ -51,7 +51,6 @@ def show_melon(melon_id):
     Show all info about a melon. Also, provide a button to buy that melon.
     """
     
-    # melon_selected = request.args.get(melon.melon_id)
     melon = melons.get_by_id(melon_id)
     print(melon)
     return render_template("melon_details.html",
@@ -63,6 +62,16 @@ def show_shopping_cart():
     """Display content of shopping cart."""
 
     # TODO: Display the contents of the shopping cart.
+
+    
+    # list of melons as melon objects
+    melon_list = melons.get_all()
+    # cart_dict with keys as melon id strings
+    cart_dict = session['cart']
+    # pull total from session
+    # total_cost = 0
+    # total_cost += melon_list[melon_id].price + melon_dict[melon_id]
+
 
     # The logic here will be something like:
     #
@@ -80,10 +89,11 @@ def show_shopping_cart():
     # Make sure your function can also handle the case wherein no cart has
     # been added to the session
 
-    return render_template("cart.html")
+    return render_template("cart.html", cart_dict=cart_dict)
 
 
 @app.route("/add_to_cart/<melon_id>")
+# <blah> in the route() is a placeholder/variable URL and already will be set as arg for parameter
 def add_to_cart(melon_id):
     """Add a melon to cart and redirect to shopping cart page.
 
@@ -102,7 +112,24 @@ def add_to_cart(melon_id):
     # - flash a success message
     # - redirect the user to the cart page
 
-    return "Oops! This needs to be implemented!"
+    # check session's cart, grouping/nesting all cart info together as a dict
+    # if 'cart' is not already in session, then start a 'cart' session
+    if 'cart' not in session:
+        session['cart'] = {}
+
+    
+    # cart is a dictionary
+    cart = session['cart']
+
+    # dictionary session (key cart) (cart's dictionary with key melon_id)
+    session['cart'][melon_id] = session['cart'].get(melon_id, 0) + 1
+    melon_list = melons.get_all()
+    print(cart)
+    
+
+    # do a flash message
+
+    return redirect("/cart")
 
 
 @app.route("/login", methods=["GET"])
